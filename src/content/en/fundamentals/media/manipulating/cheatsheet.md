@@ -25,6 +25,8 @@ in actual use would be. For example, there's nothing preventing you from setting
 an output file's bitrate in the same operation as a file conversion. For this
 cheat sheet, I will show these operations (among others) as separate commands
 for the sake of clarity.
+
+Note: To create this cheat sheet, I used ffmpeg version 3.2.2-tessus.
  
 Please let me know of useful additions or corrections.
 [Pull requests are welcome](https://github.com/google/WebFundamentals/tree/master/src/content/en/fundamentals/media/manipulating/cheatsheet).
@@ -128,6 +130,29 @@ change codecs, but do not demux.
 
     ffmpeg -i myvideo.webm -v:c copy -v:a libvorbis myvideo.webm
     ffmpeg -i myvideo.webm -v:c copy -v:a libopus myvideo.webm
+    
+### Container
+
+You might have a Flash (flv or f4v) file whose container you want to update. 
+The examples below do that.
+
+**Flash to MP4**
+
+    ffmpeg -i myvideo.flv myvideo.mp4
+
+For ffmpeg version 3.2.2-tessus, no flags are used to set codecs and audio
+sample rates, since the defaults produce the [desired
+results](files#change_the_codec). In other versions of ffmpeg, you may need to
+do something like the following:
+
+    ffmpeg -i myvideo.flv -q:a 0 -q:v 0 -c:v libx264 -c:a aac myvideo.mp4
+
+This example uses quality (`-q`) flags to ensure the highest sample quality is
+preserved. In addition, it also sets the up-to-date codecs for audio and video.
+
+**Flash to webm**
+
+    ffmpeg -i myvideo.flv -vcodec libvpx -acodec libvorbis myvideo.webm
 
 ## Package
 
