@@ -58,6 +58,10 @@ const VALID_VERTICALS = [
   'education', 'entertainment', 'media', 'real-estate', 'retail',
   'transportation', 'travel'
 ];
+const PAGE_TYPES = {
+  LANDING: 'landing',
+  ARTICLE: 'article',
+};
 const IS_TRAVIS = process.env.TRAVIS === 'true';
 const IS_TRAVIS_PUSH = process.env.TRAVIS_EVENT_TYPE === 'push';
 const IS_TRAVIS_ON_MASTER = process.env.TRAVIS_BRANCH === 'master';
@@ -252,6 +256,29 @@ function readFile(filename) {
 }
 
 /**
+ * Checks if a linked file exists.
+ *
+ * @param {string} filename The WebFundamentals file path.
+ * @return {Boolean} True if it exists, false if not.
+ */
+function doesWFFileExist(filename) {
+  if (!filename) {
+    return false;
+  }
+  filename = filename.trim();
+  if (filename.indexOf('/web') === 0) {
+    filename = filename.replace('/web', '');
+  }
+  filename = path.join('./src/content/en', filename);
+  try {
+    fs.accessSync(filename, fs.R_OK);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+
+/**
  * Parses a JSON file
  *   Note: The returned promise always resolves, it will never reject.
  *
@@ -369,6 +396,11 @@ function testMarkdown(filename, contents, options) {
       options.lastUpdateMaxDays = null;
     }
 
+    let pageType = PAGE_TYPES.ARTICLE;
+    if (/page_type: landing/.test(contents)) {
+      pageType = PAGE_TYPES.LANDING;
+    }
+
     // Verify there are no dots in the filename
     let numDots = filename.split('.');
     if (numDots.length !== 2) {
@@ -380,14 +412,30 @@ function testMarkdown(filename, contents, options) {
       logError(filename, null, 'File extension must be `.md`');
     }
 
-    // Validate book_path and project_path
-    if (!wfRegEx.RE_BOOK_PATH.test(contents) && !isInclude) {
+    // Validate book_path is specified and file exists
+    const bookPath = wfRegEx.RE_BOOK_PATH.exec(contents);
+    if (!bookPath && !isInclude) {
       msg = 'Attribute `book_path` missing from top of document';
       logError(filename, null, msg);
     }
-    if (!wfRegEx.RE_PROJECT_PATH.test(contents) && !isInclude) {
+    if (bookPath && bookPath[1] && !isInclude) {
+      msg = 'Unable to find specified `book_path`:'
+      if (doesWFFileExist(bookPath[1]) !== true) {
+        logError(filename, null, `${msg} ${bookPath[1]}`);
+      }
+    }
+
+    // Validate project_path is specified and file exists
+    const projectPath = wfRegEx.RE_PROJECT_PATH.exec(contents);
+    if (!projectPath && !isInclude) {
       msg = 'Attribute `project_path` missing from top of document';
       logError(filename, null, msg);
+    }
+    if (projectPath && projectPath[1] && !isInclude) {
+      msg = 'Unable to find specified `project_path`:'
+      if (doesWFFileExist(projectPath[1]) !== true) {
+        logError(filename, null, `${msg} ${projectPath[1]}`);
+      }
     }
 
     // Validate description
@@ -457,14 +505,7 @@ function testMarkdown(filename, contents, options) {
     // Validate featured image path
     matched = wfRegEx.RE_IMAGE.exec(contents);
     if (matched) {
-      let imgPath = matched[1];
-      if (imgPath.indexOf('/web') === 0) {
-        imgPath = imgPath.replace('/web', '');
-      }
-      imgPath = './src/content/en' + imgPath;
-      try {
-        fs.accessSync(imgPath, fs.R_OK);
-      } catch (ex) {
+      if (doesWFFileExist(matched[1]) !== true) {
         position = {line: getLineNumber(contents, matched.index)};
         msg = 'WF Tag `wf_featured_image` found, but couldn\'t find ';
         msg += `image - ${matched[1]}`;
@@ -475,14 +516,7 @@ function testMarkdown(filename, contents, options) {
     // Validate featured square image path
     matched = wfRegEx.RE_IMAGE_SQUARE.exec(contents);
     if (matched) {
-      let imgPath = matched[1];
-      if (imgPath.indexOf('/web') === 0) {
-        imgPath = imgPath.replace('/web', '');
-      }
-      imgPath = './src/content/en' + imgPath;
-      try {
-        fs.accessSync(imgPath, fs.R_OK);
-      } catch (ex) {
+      if (doesWFFileExist(matched[1]) !== true) {
         position = {line: getLineNumber(contents, matched.index)};
         msg = 'WF Tag `wf_featured_image_square` found, but couldn\'t find ';
         msg += `image - ${matched[1]}`;
@@ -543,7 +577,7 @@ function testMarkdown(filename, contents, options) {
 
     // Check for a single level 1 heading with page title
     matched = wfRegEx.RE_TITLE.exec(contents);
-    if (!matched && !isInclude) {
+    if (pageType === PAGE_TYPES.ARTICLE && !matched && !isInclude) {
       msg = 'Page is missing page title eg: `# TITLE {: .page-title }`';
       logError(filename, null, msg);
     }
@@ -603,6 +637,24 @@ function testMarkdown(filename, contents, options) {
       } else {
         msg = `Include path MUST start with \`web/\` - ${inclFile}`;
         logError(filename, position, msg);
+      }
+    });
+
+    // Verify all {% includecode %} elements work properly
+    matched = wfRegEx.getMatches(wfRegEx.RE_INCLUDE_CODE, contents);
+    matched.forEach(function(match) {
+      const msg = 'IncludeCode widget -';
+      const widget = match[0];
+      const position = {line: getLineNumber(contents, match.index)};
+      const inclFile = wfRegEx.getMatch(wfRegEx.RE_INCLUDE_CODE_PATH, widget, null);
+      if (inclFile.indexOf('web/') !== 0) {
+        logError(filename, position, `${msg} path must start with 'web/'`);
+      }
+      try {
+        const localPath = inclFile.replace('web/', GLOBAL.WF.src.content);
+        fs.accessSync(localPath, fs.R_OK);
+      } catch (ex) {
+        logError(filename, position, `${msg} file not found: '${inclFile}'`);
       }
     });
 
@@ -670,6 +722,9 @@ function testMarkdown(filename, contents, options) {
 
     remarkLintOptions.firstHeadingLevel = 1;
     if (isInclude) {
+      remarkLintOptions.firstHeadingLevel = 2;
+    }
+    if (pageType === PAGE_TYPES.LANDING) {
       remarkLintOptions.firstHeadingLevel = 2;
     }
     remarkLintOptions.maximumLineLength = false;
@@ -866,6 +921,39 @@ function testContributors(filename, contents) {
   });
 }
 
+
+/**
+ * Tests and validates a glossary.yaml file.
+ *   Note: The returned promise always resolves, it will never reject.
+ *
+ * @param {string} filename The name of the file to be tested.
+ * @param {string} contents The unparsed contents of the glossary file. 
+ * @return {Promise} A promise with the result of the test.
+ */
+function testGlossary(filename, contents) {
+  return new Promise(function(resolve, reject) {
+    const msg = 'Glossary must be sorted alphabetically by term.'; 
+    const glossary = parseYAML(filename, contents);
+    let prevTermName = '';
+    glossary.forEach((term) => {
+      if (!term.term) {
+        logError(filename, null, `'term' is missing`);
+        return;
+      }
+      const termName = term.term.toLowerCase();
+      if (!term.description) {
+        logWarning(filename, null, `${termName} is missing description`);
+      }
+      if (prevTermName > termName) {
+        const extra = `'${prevTermName}' came before '${termName}'`;
+        logError(filename, null, `${msg} ${extra}`);
+      }
+      prevTermName = termName;
+    });
+    resolve();
+  });
+}
+
 /**
  * Tests and validates a _redirects.yaml file.
  *   Note: The returned promise always resolves, it will never reject.
@@ -976,6 +1064,8 @@ function testFile(filename, opts) {
       testPromise = testYAML(filename, contents);
     } else if (filenameObj.base === '_contributors.yaml') {
       testPromise = testContributors(filename, contents);
+    } else if (filenameObj.base === 'glossary.yaml') {
+      testPromise = testGlossary(filename, contents);
     } else if (filenameObj.base === '_redirects.yaml') {
       testPromise = testRedirects(filename, contents);
     } else if (filenameObj.base === 'commontags.json') {
