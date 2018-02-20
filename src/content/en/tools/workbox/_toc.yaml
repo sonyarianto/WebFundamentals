@@ -7,10 +7,12 @@ toc:
     path: /web/tools/workbox/get-started/webpack
   - title: Gulp
     path: /web/tools/workbox/get-started/gulp
-  - title: NPM
+  - title: npm
     path: /web/tools/workbox/get-started/npm-script
 - title: Examples
   path: /web/tools/workbox/examples
+- title: Codelab
+  path: https://codelabs.developers.google.com/codelabs/workbox-lab/
 - title: Reference Docs
   section:
   - title: "Overview"
@@ -21,3 +23,5 @@ toc:
 - title: Github
   path: https://github.com/GoogleChrome/workbox
   status: external
+- title: Next Release
+  path: /web/tools/workbox/next

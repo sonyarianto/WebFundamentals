@@ -2,7 +2,8 @@ project_path: /web/_project.yaml
 book_path: /web/updates/_book.yaml
 description: An round up of the deprecations and API removals in Chrome to help you plan.
 
-{# wf_updated_on: 2016-03-14 #}
+{# wf_blink_components: Blink>Storage>AppCache,Blink>WebRTC,Internals>Media>Encrypted,Blink>SVG #}
+{# wf_updated_on: 2018-01-08 #}
 {# wf_published_on: 2016-03-14 #}
 {# wf_tags: deprecations,removals,chrome50 #}
 {# wf_featured_image: /web/updates/images/generic/warning.png #}
@@ -19,7 +20,7 @@ improvements to the product, its performance, and also capabilities of the web
 platform.
 
 
-<<../../_deprecation-policy.md>>
+{% include "web/updates/_shared/deprecations-policy.html" %}
 
 In Chrome 50 (Estimated beta date: March 10 to 17) there are a number of changes to Chrome.
 This list is subject to change at any time.

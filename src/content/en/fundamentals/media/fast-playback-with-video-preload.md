@@ -3,7 +3,7 @@ book_path: /web/fundamentals/_book.yaml
 description: Preload video and audio for faster playback.
 
 {# wf_published_on: 2017-08-17 #}
-{# wf_updated_on: 2017-09-26 #}
+{# wf_updated_on: 2018-01-08 #}
 {# wf_blink_components: Blink>Media #}
 
 # Fast Playback with Video Preload {: .page-title }
@@ -116,7 +116,9 @@ has actually been fetched.
 
 Setting the `preload` attribute to `metadata` indicates that the user is not
 expected to need the video, but that fetching its metadata (dimensions, track
-list, duration, and so on) is desirable.
+list, duration, and so on) is desirable. Note that starting in [Chrome 64], the
+default value for `preload` is `metadata`. (It was `auto` previously).
+
 
 ```
 <video id="video" preload="metadata" src="file.mp4" controls></video>
@@ -569,6 +571,7 @@ requests.
 
 [how much information or content to preload]: /web/fundamentals/media/video#preload
 [video preload attribute]: /web/fundamentals/media/video#preload
+[Chrome 64]: /web/updates/2017/12/chrome-63-64-media-updates#media-preload-defaults-metadata
 [Data Saver]: https://support.google.com/chrome/answer/2392284
 [Media Source Extensions (MSE)]: /web/fundamentals/media/mse/basics
 [covered]: /web/updates/2016/03/link-rel-preload
@@ -585,6 +588,6 @@ requests.
 [JW Player]: https://developer.jwplayer.com/
 [Video.js]: http://videojs.com/
 [Android bug]: https://bugs.chromium.org/p/chromium/issues/detail?id=612909
-[Delivering Fast and Light Applications with Save-Data]: https://developers.google.com/web/updates/2016/02/save-data
+[Delivering Fast and Light Applications with Save-Data]: /web/updates/2016/02/save-data
 [Network Information sample]: https://googlechrome.github.io/samples/network-information/
 [in Chrome]: https://github.com/whatwg/fetch/issues/569

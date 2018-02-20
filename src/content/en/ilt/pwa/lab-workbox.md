@@ -2,7 +2,7 @@ project_path: /web/_project.yaml
 book_path: /web/ilt/pwa/_book.yaml
 
 {# wf_auto_generated #}
-{# wf_updated_on: 2017-10-09T21:08:56Z #}
+{# wf_updated_on: 2018-01-22 #}
 {# wf_published_on: 2016-01-01 #}
 
 
@@ -118,7 +118,7 @@ Save the __service-worker.js __file. In the command line, run `gulp serve` to op
 
 Here we import the `workbox-sw` library and create an instance of `WorkboxSW` so we can access  [the library methods](https://workboxjs.org/reference-docs/latest/module-workbox-sw.WorkboxSW.html#main) from this object.
 
-In the next line we call `workboxSW.precache([])`. This method takes a manifest of URLs to cache on service worker installation. It is recommended to use `workbox-build` or `workbox-cli` to generate the manifest for you (this is why the array is empty). These build tools will generate hashes of the files along with their URLsWe will do that in the next step. 
+In the next line we call `workboxSW.precache([])`. This method takes a manifest of URLs to cache on service worker installation. It is recommended to use `workbox-build` or `workbox-cli` to generate the manifest for you (this is why the array is empty). These build tools will generate hashes of the files along with their URLs. We will do that in the next step. 
 
 The `precache` method takes care of precaching files, removing cached files no longer in the manifest, updating existing cached files, and it even sets up a fetch handler to respond to any requests for URLs in the manifest using a cache-first strategy. See  [this example](https://workboxjs.org/examples/workbox-sw/#explore-the-code) for a full explanation.
 
@@ -147,6 +147,8 @@ Next, add a line to include the workbox-build library at the top of __gulpfile.j
 ```
 const wbBuild = require('workbox-build');
 ```
+
+This line integrates the `workbox-build` module into your gulpfile, allowing you to use the module to generate a manifest of local files that workbox-sw should precache.
 
 Now copy and paste the following gulp task into the gulpfile:
 
@@ -256,7 +258,7 @@ Save the file. Saving the file should trigger the gulp watch task which automati
 
 #### Explanation
 
-Here we add a few routes to the service worker using  [`registerRoute`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Router.html#registerRoute) method on the  [`router`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Router.html#main) class. `registerRoute` takes an Express-style or regular expression URL pattern, or a  [Route](https://workboxjs.org/reference-docs/latest/module-workbox-routing.Route.html#main) instance. The second argument is the handler that provides a response if the route matches. The handler argument is ignored if you pass in a Route object, otherwise it's required.
+Here we add a few routes to the service worker using  [`registerRoute`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Router.html#registerRoute) method on the  [`rout``er`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Router.html#main) class. `registerRoute` takes an Express-style or regular expression URL pattern, or a  [Route](https://workboxjs.org/reference-docs/latest/module-workbox-routing.Route.html#main) instance. The second argument is the handler that provides a response if the route matches. The handler argument is ignored if you pass in a Route object, otherwise it's required.
 
 Each route uses the  [`strategies`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Strategies.html#main) class to access the  [`cacheFirst`](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Strategies.html#cacheFirst) run-time caching strategy. The built-in caching strategies have several  [configuration options](https://workboxjs.org/reference-docs/latest/module-workbox-sw.Strategies.html#.StrategyOptions) for controlling how resources are cached.
 

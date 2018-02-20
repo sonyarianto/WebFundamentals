@@ -1,21 +1,21 @@
 project_path: /web/_project.yaml
 book_path: /web/updates/_book.yaml
-description: Learn best practices for good user experiences with the new autoplay policies in Chrome.
+description: Learn best practices for good user experiences with the new autoplay policies in Chrome, coming April 2018.
 
-{# wf_updated_on: 2017-09-21 #}
+{# wf_updated_on: 2018-02-10 #}
 {# wf_published_on: 2017-09-13 #}
-{# wf_tags: news,media #}
+{# wf_tags: autoplay,news,media #}
 {# wf_featured_image: /web/updates/images/generic/play-outline.png #}
-{# wf_featured_snippet: Learn best practices for good user experiences with the new autoplay policies in Chrome. #}
+{# wf_featured_snippet: Learn best practices for good user experiences with the new autoplay policies in Chrome, coming April 2018. #}
 {# wf_blink_components: Blink>Media #}
 
 # Autoplay Policy Changes {: .page-title }
 
 {% include "web/_shared/contributors/beaufortfrancois.html" %}
 
-Chrome's autoplay policies are about to change in 2018 and I'm here to tell you
-why and how this is going to affect video playback with sound. Spoiler alert:
-Users are going to love it!
+Chrome's autoplay policies will change in April of 2018 and I'm here to tell
+you why and how this is going to affect video playback with sound. Spoiler
+alert: users are going to love it!
 
 <figure>
   <a href="https://imgflip.com/i/ngd6c">
@@ -37,23 +37,25 @@ Users are going to love it!
 ## New behaviors {: #new-behaviors }
 
 As you may have [noticed], web browsers are moving towards stricter autoplay
-policies in order to improve the web experience for users, minimize the
-incentives to install extensions that block ads, and reduce data consumption on
-expensive and/or constrained networks.
-
-With these new autoplay policies, the Chrome team aims to provide a greater
-control to users over content playing in their browser. Those will also benefit
-publishers who have legitimate autoplay use cases.
+policies in order to improve the user experience, minimize incentives to install
+ad blockers, and reduce data consumption on expensive and/or constrained
+networks. These changes are intended to give greater control of playback to
+users and to benefit publishers with legitimate use cases.
 
 Chrome's autoplay policies are simple:
 
 - Muted autoplay is always allowed.
-- Autoplay with sound is allowed if any of the following conditions are met:
-    - User has interacted with the site (click, tap, etc.)
-    - [Media Engagement Index](#mei) threshold is crossed (desktop only)
-    - Site has been installed using the ["Add to Homescreen" flow] (mobile only)
-- Top frame can [delegate autoplay permission](#iframe) to their iframes to
+- Autoplay with sound is allowed if:
+    - User has interacted with the domain (click, tap, etc.).
+    - On desktop, the user's [Media Engagement Index](#mei) threshold has been crossed,
+      meaning the user has previously play video with sound.
+    - On mobile, the user has [added the site to his or her home screen].
+- Top frames can [delegate autoplay permission](#iframe) to their iframes to
   allow autoplay with sound.
+
+Note: You can try out these new policies by setting the experimental flag
+`chrome://flags/#autoplay-policy` to "Document user activation is required." in
+Chrome 64.
 
 ### Media Engagement Index (MEI) {: #mei }
 
@@ -83,15 +85,29 @@ User's MEI is available at the <i>chrome://media-engagement</i> internal page.
 
 ### Iframe delegation {: #iframe }
 
-Once an origin has received autoplay permission, it can delegate that
-permission to iframes via a new HTML attribute. Check out the [Gesture
-Delegation API proposal] to learn more.
+A [feature policy] allows developers to selectively enable and disable use of
+various browser features and APIs. Once an origin has received autoplay
+permission, it can delegate that permission to cross-origin iframes with a new
+[feature policy for autoplay]. Note that autoplay is allowed by default on
+same-origin iframes.
 
 <pre class="prettyprint">
-&lt;iframe src="myvideo.html" gesture="media">
+&lt;!-- Autoplay is allowed. -->
+&lt;iframe src="https://cross-origin.com/myvideo.html" allow="autoplay">
+
+&lt;!-- Autoplay and Fullscreen are allowed. -->
+&lt;iframe src="https://cross-origin.com/myvideo.html" allow="autoplay; fullscreen">
 </pre>
 
-Without iframe delegation, videos will not be able to autoplay with sound.
+When the feature policy for autoplay is disabled, calls to `play()` without a
+user gesture will reject the promise with a `NotAllowedError` DOMException. And
+the autoplay attribute will also be ignored.
+
+You can try out this feature policy by enabling the experimental flag
+`chrome://flags/#enable-experimental-web-platform-features`.
+
+Warning: Older articles incorrectly recommend using the attribute
+`gesture=media` which is not supported.
 
 ### Example scenarios
 
@@ -102,7 +118,7 @@ high, autoplay is allowed.
 <b>Example 2:</b> <i>GlobalNewsSite.com</i> has both text and video content.
 Most users go to the site for text content and watch videos only occasionally.
 Users' media engagement score is low, so autoplay wouldn't be allowed if a user
-navigates directly from a social media page or search. 
+navigates directly from a social media page or search.
 
 <b>Example 3:</b> <i>LocalNewsSite.com</i> has both text and video content.
 Most people enter the site through the homepage and then click on the news
@@ -116,7 +132,9 @@ get to the specific blog, so autoplay is allowed. However, the blog needs to
 explicitly delegate that privilege to the iframe in order for the content to
 autoplay.
 
-## Best practises for web developers {: #best-practises }
+## Best practices for web developers {: #best-practices }
+
+### Audio/Video elements
 
 Here's the one thing to remember: Don't ever assume a video will play, and
 don't show a pause button when the video is not actually playing. It is so
@@ -130,7 +148,7 @@ You should always look at the [Promise] returned by the play function to see if
 it was [rejected]:
 
     var promise = document.querySelector('video').play();
-    
+
     if (promise !== undefined) {
       promise.then(_ => {
         // Autoplay started!
@@ -156,6 +174,46 @@ including Facebook, Instagram, Twitter, and YouTube.
       });
     </script>
 
+### WebAudio
+
+First, be reminded that it is good practice to wait for a user interaction
+before starting audio playback as user is aware of something happening. Think
+of a "play" button or "on/off" switch for instance. You can also simply add an
+"unmute" button depending on the flow of the app.
+
+Key Point: An <code>AudioContext</code> must be created or resumed after the
+document received a user gesture to enable audio playback.
+
+If you create your <code>AudioContext</code> on page load, you’ll
+have to call <code>resume()</code> later when user interacts with the page
+(e.g., user clicked a button).
+
+    // Existing code unchanged.
+    window.onload = function() {
+      var context = new AudioContext();
+      // Setup all nodes
+      ...
+    }
+
+    // One-liner to resume playback when user interacted with the page.
+    document.querySelector('button').addEventListener('click', function() {
+      context.resume().then(() => {
+        console.log('Playback resumed successfully');
+      });
+    });
+
+You may also create the <code>AudioContext</code> only when user interacts wit
+the page.
+
+    document.querySelector('button').addEventListener('click', function() {
+      var context = new AudioContext();
+      // Setup all nodes
+      ...
+    });
+
+For info, checkout the small [Pull Request] that fixes WebAudio playback due to
+these autoplay policy changes for [https://airhorner.com].
+
 ## Feedback
 
 At the time of writing, Chrome's autoplay policies aren't carved in stone.
@@ -165,10 +223,13 @@ thoughts.
 {% include "comment-widget.html" %}
 
 [noticed]: https://webkit.org/blog/7734/auto-play-policy-changes-for-macos/
-["Add to Homescreen" flow]: /web/updates/2017/02/improved-add-to-home-screen
+[added the site to his or her home screen]: /web/updates/2017/02/improved-add-to-home-screen
 [Promise]: /web/fundamentals/getting-started/primers/promises
 [rejected]: /web/updates/2017/06/play-request-was-interrupted
 [200x140]: https://chromium.googlesource.com/chromium/src/+/1c63b1b71d28851fc495fdee9a2c724ea148e827/chrome/browser/media/media_engagement_contents_observer.cc#38
-[Gesture Delegation API proposal]: https://github.com/mounirlamouri/gesture-delegation/blob/master/explainer.md
+[feature policy for autoplay]: https://github.com/WICG/feature-policy/blob/gh-pages/features.md
+[feature policy]: https://wicg.github.io/feature-policy/
 [current approach]: https://docs.google.com/document/d/1_278v_plodvgtXSgnEJ0yjZJLg14Ogf-ekAFNymAJoU/edit
+[Pull Request]: https://github.com/GoogleChromeLabs/airhorn/pull/37
+[https://airhorner.com]: https://airhorner.com
 [ChromiumDev on Twitter]: https://twitter.com/chromiumdev

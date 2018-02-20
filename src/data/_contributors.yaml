@@ -22,6 +22,17 @@
 #   country: US               # Optional - ISO Country Code (not shown)
 #   email: test@example.com   # Optional (not shown)
 
+iamakulov:
+  name:
+    given: Ivan
+    family: Akulov
+  homepage: https://iamakulov.com
+  twitter: iamakulov
+  github: iamakulov
+  description:
+    en: Contracting software engineer · Blogging, open source, performance, UX
+  email: mail@iamakulov.com
+
 jbnicolai:
   name:
     given: Joshua
@@ -103,7 +114,7 @@ kaycebasques:
   role:
     - author
   description:
-    en: Technical Writer at Google
+    en: Technical Writer for Chrome DevTools
 
 beaufortfrancois:
   name:
@@ -130,6 +141,7 @@ lucaberton:
   country: IT
   role:
     - contributor
+    - translator
   homepage: 'http://mrevolution.eu'
   google: +LucaBerton
   twitter: mrevolution85
@@ -220,7 +232,7 @@ owencm:
     unit: Product Management
   country: US
   role:
-    - contributer
+    - contributor
   homepage: 'http://www.owencampbellmoore.com/'
   google: +OwenCampbellMoore
   twitter: owencm
@@ -263,6 +275,17 @@ samchen:
   email: chenxsan@google.com
   description:
     en: Sam is a Front End Developer
+
+hongchanchoi:
+  name:
+    given: Hongchan
+    family: Choi
+  org:
+    name: Google
+  homepage: https://hoch.io
+  twitter: hochsays
+  description:
+    en: Software Engineer working on Web Audio in Chromium
 
 kenchris:
   name:
@@ -512,6 +535,16 @@ simongong:
   description:
     en: Simon is a Full Stack Developer
 
+jennygove:
+  name:
+    given: Jenny
+    family: Gove
+  description:
+    en: >
+      Jenny Gove is a UX Research Lead at Google, where she conducts research
+      on smartphone experiences. She obtained her PhD from the University of
+      Southampton, UK.
+
 greenido:
   name:
     given: Ido
@@ -645,6 +678,21 @@ ilmariheikkinen:
   twitter: ilmarihei
   role:
     - author
+
+patrickhulce:
+  name:
+    given: Patrick
+    family: Hulce
+  org:
+    name: Google
+    unit: Chrome DevTools
+  country: US
+  role:
+    - author
+  description:
+    en: Performance Poet
+  github: patrickhulce
+  twitter: patrickhulce
 
 paulirish:
   name:
@@ -900,6 +948,17 @@ petelepage:
   description:
     en: Pete is a Developer Advocate
 
+kennith:
+  name:
+    given: Kennith
+    family: Leung
+  homepage: http://kennithleung.com
+  twitter: kennith
+  google: +kennith
+  email: kennith.leung@gmail.com
+  role:
+    - translator
+
 paullewis:
   name:
     given: Paul
@@ -921,8 +980,8 @@ henrylim:
     given: Henry
     family: Lim
   org:
-    name: Independent
-    unit: Developer
+    name: Google Developer Group Kuala Lumpur
+    unit: Community Co-organizer
   country: MY
   role:
     - translator
@@ -931,7 +990,7 @@ henrylim:
   homepage: 'https://limhenry.xyz'
   email: lets.email.henry@gmail.com
   description:
-    en: 'Co-Organizer @ GDG Kuala Lumpur'
+    en: 'Henry is the community co-organizer @ Google Developer Group Kuala Lumpur.'
 
 wayouliu:
   name:
@@ -1063,7 +1122,7 @@ addyosmani:
   org:
     name: Google
     unit: Developer Relations
-  country: UK
+  country: USA
   role:
     - author
   google: +AddyOsmani
@@ -1139,6 +1198,23 @@ rupl:
   email: chris.ruppel@gmail.com
   description:
     en: Chris is a frontend developer and web performance advocate.
+
+satyakresna:
+  name:
+    given: Kresna
+    family: Satya
+  org:
+    name: Independent
+    unit: Web Programmer
+  country: ID
+  role:
+    - translator
+  homepage: 'https://satyakresna.com'
+  google: +SatyaKresnaAdiPratama
+  twitter: _satyakresna
+  email: satyakresna6295@gmail.com
+  description:
+    en: Kresna is a Web Programmer.
 
 taylorsavage:
   name:
@@ -1277,6 +1353,33 @@ alansilva:
   description:
     en: Alan is a JavaScript Developer
 
+vinamratasingal:
+  name:
+    given: Vinamrata
+    family: Singal
+  org:
+    name: Google
+    unit: Chrome
+  country: US
+  role:
+    - author
+  description:
+    en: Lighthouse Product Manager
+
+dmitryskripunov:
+  name:
+    given: Dmitry
+    family: Skripunov
+  country: Russia
+  role:
+    - translator
+  twitter: dmitryskripunov
+  google: "116954151022889696749"
+  github: dmitryskripunov
+  email: dskripunov@gmail.com
+  description:
+    en: Dmitry is a Software Engineer
+
 andismith:
   name:
     given: Andi
@@ -1320,6 +1423,29 @@ emilystark:
   homepage: 'https://www.emilymstark.com/'
   twitter: estark37
   email: estark@chromium.org
+
+sunyunjia:
+  name:
+    given: Sandra
+    family: Sun
+  org:
+    name: Google
+    unit: Chrome
+  country: Canada
+  role:
+    - engineer
+  email: sunyunjia@google.com
+  description:
+    en: "Software Engineer working on Chromium"
+
+ossu:
+  name:
+    given: Oskar
+    family: Sundbom
+  org:
+    name: Google
+  description:
+    en: Software Engineer working on WebRTC and Audio in Chromium
 
 surma:
   name:
@@ -1392,6 +1518,23 @@ fouadvaladbeigi:
   google: "115771375659957547634"
   email: fouad.valadbeigi@unit9.com
 
+majidvp:
+  name:
+    given: Majid
+    family: Valipour
+  homepage: http://zgrs.ca
+  twitter: majido
+  github: majido
+  description:
+    en: "Software Engineer working on Chromium"
+  org:
+    name: Google
+    unit: Software Engineer
+  country: CA
+  role:
+    - engineer
+  email: majidvp@google.com
+
 johyphenel:
   name:
     given: Jo-el
@@ -1406,6 +1549,21 @@ johyphenel:
   google: +Jo-elvanBergen
   twitter: johyphenel
   email: jo-el@google.com
+
+rviscomi:
+  name:
+    given: Rick
+    family: Viscomi
+  org:
+    name: Google
+    unit: Developer Relations
+  country: USA
+  homepage: 'https://twitter.com/rick_viscomi'
+  twitter: rick_viscomi
+  github: rviscomi
+  role:
+    - author
+  email: rviscomi@google.com
 
 philipwalton:
   name:

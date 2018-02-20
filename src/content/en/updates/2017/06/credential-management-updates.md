@@ -2,12 +2,12 @@ project_path: /web/_project.yaml
 book_path: /web/updates/_book.yaml
 description: Latest Updates to the Credential Management API
 
-{# wf_updated_on: 2017-10-12 #}
+{# wf_updated_on: 2018-01-10 #}
 {# wf_published_on: 2017-06-12 #}
 {# wf_tags: credentials,chrome57,chrome60 #}
 {# wf_featured_image: /web/updates/images/generic/security.png #}
 {# wf_featured_snippet: Latest updates coming to the Credential Management API in Chrome 60. Also includes an update landed in Chrome 57. #}
-{# wf_blink_components: Blink #}
+{# wf_blink_components: Blink>SecurityFeature>CredentialManagement #}
 
 # Latest Updates to the Credential Management API {: .page-title }
 
@@ -151,7 +151,7 @@ You can use existing methods to deliver credential information to your server:
 <aside class="warning">
   <strong>Warning:</strong>
   Now that passwords are no longer returned in the <code>PasswordCredential</code> object,
-  the custom <code>fetch()</code> function will stop working in Chrome 62.
+  the custom <code>fetch()</code> function will stop working in Chrome 64 (expected [23 Jan 2018](https://www.chromestatus.com/features/schedule)).
   Developers <strong>must</strong> update their code.
 </aside>
 
