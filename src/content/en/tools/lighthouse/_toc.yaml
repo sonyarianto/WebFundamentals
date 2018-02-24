@@ -48,6 +48,8 @@ toc:
   path: /web/tools/lighthouse/audits/aspect-ratio
 - title: Document Does Not Have A Meta Description
   path: /web/tools/lighthouse/audits/description
+- title: Document Doesn't Use Legible Font Sizes
+  path: /web/tools/lighthouse/audits/font-sizes
 - title: Element aria-* Attributes Are Allowed For This Role
   path: /web/tools/lighthouse/audits/aria-allowed-attributes
 - title: Element aria-* Attributes Are Valid And Not Misspelled Or Non-Existent
@@ -76,6 +78,8 @@ toc:
   path: /web/tools/lighthouse/audits/bootup
 - title: Keep Server Response Times Low
   path: /web/tools/lighthouse/audits/ttfb
+- title: Links Do Not Have Descriptive Text
+  path: /web/tools/lighthouse/audits/descriptive-link-text
 - title: Manifest Contains Icons at Least 192px
   path:  /web/tools/lighthouse/audits/manifest-contains-192px-icon
 - title: Manifest Contains background_color
