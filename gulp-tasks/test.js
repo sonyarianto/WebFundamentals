@@ -18,6 +18,7 @@ const wfRegEx = require('./wfRegEx');
 const wfHelper = require('./wfHelper');
 
 
+const testBook = require('./tests/bookYaml');
 const testProject = require('./tests/projectYaml');
 const testRedirects = require('./tests/redirectsYaml');
 const testGlossary = require('./tests/glossaryYaml');
@@ -33,6 +34,7 @@ const validateGeneric = require('./tests/validateGeneric');
 const validateFilename = require('./tests/validateFilename');
 const validateMarkdown = require('./tests/validateMarkdown');
 const validatePermissions = require('./tests/validatePermissions');
+const validateCommonTyposFile = require('./tests/validateCommonTyposFile');
 
 /** ***************************************************************************
  * Constants & Remark Lint Options
@@ -55,6 +57,7 @@ const RE_DATA_BASE = /src\/data\//;
 const RE_GULP_BASE = /^gulp-tasks\/?/;
 const ESLINT_RC_FILE = '.eslintrc';
 const COMMON_TAGS_FILE = 'src/data/commonTags.json';
+const COMMON_TYPOS_FILE = 'src/data/common-typos.yaml';
 const CONTRIBUTORS_FILE = 'src/data/_contributors.yaml';
 const BLINK_COMPONENTS_FILE = 'src/data/blinkComponents.json';
 const IS_TRAVIS = process.env.TRAVIS === 'true';
@@ -357,6 +360,15 @@ function testFile(filename, opts) {
     return Promise.resolve(false);
   }
 
+  // Check if the file has the wf_ignore_file attribute, if so, skip tests.
+  if (wfRegEx.RE_IGNORE_FILE.test(contents)) {
+    if (!opts.hideIgnored) {
+      const msg = `Skipped (wf_ignore_file).`;
+      logWarning(filename, null, msg);
+    }
+    return Promise.resolve(false);
+  }
+
   // Check if the file is auto-generated, if it is, ignore it
   if (wfRegEx.RE_AUTO_GENERATED.test(contents)) {
     if (global.WF.options.verbose) {
@@ -378,6 +390,12 @@ function testFile(filename, opts) {
       .then((parsed) => testContributors.test(filename, parsed));
   }
 
+  // Check the contributors file
+  if (filenameObj.base === 'common-typos.yaml') {
+    return validateYaml.test(filename, contents)
+      .then((parsed) => validateCommonTyposFile.test(filename, parsed));
+  }
+
   // Check the glossary file
   if (filenameObj.base === 'glossary.yaml') {
     return validateYaml.test(filename, contents)
@@ -394,6 +412,12 @@ function testFile(filename, opts) {
   if (filenameObj.base === '_project.yaml') {
     return validateYaml.test(filename, contents)
       .then((parsed) => testProject.test(filename, parsed));
+  }
+
+  // Check _book.yaml & _toc.yaml files
+  if (filenameObj.base === '_book.yaml' || filenameObj.base === '_toc.yaml') {
+    return validateYaml.test(filename, contents)
+      .then((parsed) => testBook.test(filename, parsed));
   }
 
   // Check the common tags file
@@ -415,12 +439,19 @@ function testFile(filename, opts) {
 
   // Check HTML files
   if (filenameObj.ext === '.html') {
-    return validateHtml.test(filename, contents);
+    return validateHtml.test(filename, contents, opts);
   }
 
   // Check YAML files
   if (filenameObj.ext === '.yaml') {
-    return validateYaml.test(filename, contents);
+    return validateYaml.test(filename, contents)
+      .then((parsed) => {
+        // Not all _toc.yaml files will be named _toc.yaml, so if it has a
+        // toc element, treat it as a _toc.yaml file.
+        if (parsed.toc) {
+          return testBook.test(filename, parsed);
+        }
+      });
   }
 
   // Check JSON files
@@ -515,6 +546,12 @@ gulp.task('test:travis-init', function() {
     if (ciFlags.indexOf('FEED_WIDGET') >= 0) {
       global.WF.options.ignoreMissingFeedWidget = true;
     }
+    if (ciFlags.indexOf('SKIP_TYPOS') >= 0) {
+      global.WF.options.skipTypos = true;
+    }
+    if (ciFlags.indexOf('TEMPLATE_TAGS') >= 0) {
+      global.WF.options.ignoreTemplateTags = true;
+    }
   });
 });
 
@@ -536,8 +573,11 @@ gulp.task('test', ['test:travis-init'], function() {
     gutil.log(' ', chalk.cyan('--ignorePermissions'), 'Skips permission check');
     gutil.log(' ', chalk.cyan('--ignoreLastUpdated'), 'Skips wf_updated_on');
     gutil.log(' ', chalk.cyan('--ignoreCommentWidget'), 'Skips comment widget');
+    gutil.log(' ', chalk.cyan('--ignoreTemplateTags'),
+      'Skips template tag check ({{)');
     gutil.log(' ', chalk.cyan('--ignoreMissingFeedWidget'),
       'Skips feed widget check on updates');
+    gutil.log(' ', chalk.cyan('--skipTypos'), 'Skips common typo checks');
   }
 
   if ((global.WF.options.testMaster) ||
@@ -549,8 +589,11 @@ gulp.task('test', ['test:travis-init'], function() {
     global.WF.options.ignoreFileSize = true;
     global.WF.options.ignorePermissions = true;
     global.WF.options.ignoreLastUpdated = true;
+    global.WF.options.ignoreTemplateTags = true;
     global.WF.options.ignoreCommentWidget = true;
     global.WF.options.ignoreMissingFeedWidget = true;
+    global.WF.options.hideIgnored = true;
+    global.WF.options.skipTypos = true;
   }
 
   let opts = {
@@ -558,8 +601,15 @@ gulp.task('test', ['test:travis-init'], function() {
     lastUpdateMaxDays: 7,
     warnOnJavaScript: true,
     commonTags: parseJSON(COMMON_TAGS_FILE, readFile(COMMON_TAGS_FILE)),
+    commonTypos: parseYAML(COMMON_TYPOS_FILE, readFile(COMMON_TYPOS_FILE)),
     contributors: parseYAML(CONTRIBUTORS_FILE, readFile(CONTRIBUTORS_FILE)),
   };
+
+  // Test master
+  if (global.WF.options.testMaster) {
+    let msg = `${chalk.cyan('--testMaster')} was used.`;
+    gutil.log(chalk.bold.blue(' Option:'), msg);
+  }
 
   // Test all files
   if (global.WF.options.testAll) {
@@ -638,6 +688,27 @@ gulp.task('test', ['test:travis-init'], function() {
     let msg = `${chalk.cyan('--ignoreLastUpdated')} was used.`;
     gutil.log(chalk.bold.blue(' Option:'), msg);
     opts.lastUpdateMaxDays = false;
+  }
+
+  // Supress template tag ({{}}) checks
+  if (global.WF.options.ignoreTemplateTags) {
+    let msg = `${chalk.cyan('--ignoreTemplateTags')} was used.`;
+    gutil.log(chalk.bold.blue(' Option:'), msg);
+    opts.ignoreTemplateTags = true;
+  }
+
+  // Hide ignored file warning
+  if (global.WF.options.hideIgnored) {
+    let msg = `${chalk.cyan('--hideIgnored')} was used.`;
+    gutil.log(chalk.bold.blue(' Option:'), msg);
+    opts.hideIgnored = true;
+  }
+
+  // Skips the common typos checks
+  if (global.WF.options.skipTypos) {
+    const msg = `${chalk.cyan('--skipTypos')} was used.`;
+    gutil.log(chalk.bold.blue(' Option:'), msg);
+    opts.skipTypos = true;
   }
 
   return getFiles()

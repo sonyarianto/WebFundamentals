@@ -2,7 +2,7 @@ project_path: /web/tools/_project.yaml
 book_path: /web/tools/_book.yaml
 description: Reference documentation for the "Document doesn't have a valid rel=canonical" Lighthouse audit.
 
-{# wf_updated_on: 2018-03-06 #}
+{# wf_updated_on: 2018-07-23 #}
 {# wf_published_on: 2018-03-05 #}
 {# wf_blink_components: Platform>DevTools #}
 
@@ -88,7 +88,7 @@ Note: Recommendations for other search engines are welcome. [Edit this page.][Ed
 
 * Use the [Index Status Report][ISR]{:.external} to see which URLs Google considers canonical
   or duplicate across your entire site.
-* Don't use Google's URL removal tool for canonicalization. It removes *all* versions of a URL
+* Don't use Google's URL removal tool for canonization. It removes *all* versions of a URL
   from search.
 * You can use the Search Console to specify a preferred domain for all pages. See [Set your
   preferred domain][Domain]{:.external}.
@@ -113,3 +113,7 @@ Lighthouse marks the audit as a fail if any of the following are true:
 [Audit source][src]{:.external}
 
 [src]: https://github.com/GoogleChrome/lighthouse/blob/master/lighthouse-core/audits/seo/canonical.js
+
+## Feedback {: #feedback }
+
+{% include "web/_shared/helpful.html" %}

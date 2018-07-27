@@ -2,9 +2,9 @@ project_path: /web/fundamentals/_project.yaml
 book_path: /web/fundamentals/_book.yaml
 description: Thanks to mobile device and network proliferation, more people are using the web than ever before. As this user base grows, performance is more important than ever. In this article, find out why performance matters, and learn what you can do to make the web faster for everyone.
 
-{# wf_updated_on: 2018-03-06 #}
-{# wf_published_on: 2015-06-07 #}
-{# wf_blink_components: Blink>PerformanceAPIs,Blink>JavaScript>Runtime,Blink>Input #}
+{# wf_updated_on: 2018-06-11 #}
+{# wf_published_on: 2018-03-08 #}
+{# wf_blink_components: N/A #}
 
 # Why Performance Matters {: .page-title }
 
@@ -33,7 +33,7 @@ ones. Here are some case studies of how performance has affected engagement and
 conversions for several websites.
 
 - [Pinterest rebuilt their pages for performance realizing a 40% reduction in
-perceived wait times, thus increasing both search engine traffic and signups by
+perceived wait times, thus increasing both search engine traffic and sign-ups by
 15%](https://medium.com/@Pinterest_Engineering/driving-user-growth-with-performance-improvements-cfc50dafadd7).
 - [By cutting average page load time by 850 milliseconds, COOK found they were
 able to increase conversions by 7%, decrease bounce rates by 7%, and increase
@@ -65,7 +65,7 @@ tool](https://www.thinkwithgoogle.com/feature/mobile/).
 src="images/speed-scorecard-1x.png" alt="A screenshot of the Speed Scorecard
 tool, comparing performance across four popular news outlets.">
   <figcaption><b>Figure 1</b>. Speed Scorecard comparing the performance of four
-competing sites using Chrome UX Report data from 3G network users in the United
+competing sites using Chrome UX Report data from 4G network users in the United
 States.</figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ moments](https://aneventapart.com/news/post/eric-meyer-designing-for-crisis),
 the importance of delivering this information expediently can't be understated.
 It's part of our job.
 
-### Where to go from here
+## Where to go from here
 
 You know now _why_ performance matters, but you might be wondering "what next?"
 Next, we'll cover three pragmatic performance considerations, complete with
@@ -318,6 +318,11 @@ to an `<img>` element to specify an array of images the browser can choose from.
 On the more complex side of things, you can use `<picture>` to help the browser
 choose the most optimal format (e.g., WebP over JPEG or PNG), or serve
 altogether different treatments of images for different screen sizes.
+- [Use video instead of animated
+GIFs](/web/fundamentals/performance/optimizing-content-efficiency/replace-animated-gifs-with-video/).
+Animated GIFs are _massive_, but videos of similar quality are _far_ smaller,
+often by 80% or so. If your site makes heavy use of animated GIFs, this is
+probably the most impactful thing you can do to improve loading performance.
 - [Client hints](http://httpwg.org/http-extensions/client-hints.html) can be used
 to tailor resource delivery based on current network conditions and device
 characteristics. The `DPR`, `Width` and `Viewport-Width` headers can help you

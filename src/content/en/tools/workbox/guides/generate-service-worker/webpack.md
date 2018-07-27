@@ -3,12 +3,10 @@ book_path: /web/tools/workbox/_book.yaml
 description: A guide on how to generate a complete service worker with the Workbox Webpack Plugin.
 
 {# wf_blink_components: N/A #}
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-18 #}
 {# wf_published_on: 2017-11-15 #}
 
 # Generate a Service Worker with Webpack {: .page-title }
-
-{% include "web/tools/workbox/_shared/beta.html" %}
 
 This page explains how to use the `workbox-webpack-plugin` node module to
 generate a complete service worker with precaching and runtime caching.
@@ -30,7 +28,7 @@ module.exports = {
   plugins: [
     // Other plugins...
 
-    WorkboxPlugin.GenerateSW()
+    new WorkboxPlugin.GenerateSW()
   ]
 };
 ```
@@ -38,7 +36,7 @@ module.exports = {
 The generated service worker will be setup to precache all the files in your
 webpack build.
 
-In your webpage, you can register this service worker by adding:
+In your web page, you can register this service worker by adding:
 
 {% include "web/tools/workbox/guides/_shared/register-sw.html" %}
 
@@ -68,27 +66,28 @@ module.exports = {
   plugins: [
     // Other plugins...
 
-    WorkboxPlugin.GenerateSW({
+    new WorkboxPlugin.GenerateSW({
       // Exclude images from the precache
       exclude: [/\.(?:png|jpg|jpeg|svg)$/],
 
       // Define runtime caching rules.
-      runtimeCaching: [
-        {
-          // Match any request ends with .png, .jpg, .jpeg or .svg.
-          urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+      runtimeCaching: [{
+        // Match any request ends with .png, .jpg, .jpeg or .svg.
+        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
 
-          // Apply a cache-first strategy.
-          handler: 'cacheFirst',
+        // Apply a cache-first strategy.
+        handler: 'cacheFirst',
 
-          options: {
-            // Only cache 10 images.
-            expiration: {
-              maxEntries: 10,
-            },
+        options: {
+          // Use a custom cache name.
+          cacheName: 'images',
+
+          // Only cache 10 images.
+          expiration: {
+            maxEntries: 10,
           },
         },
-      ],
+      }],
     })
   ]
 };

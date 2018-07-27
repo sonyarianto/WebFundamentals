@@ -7,13 +7,14 @@ import devsiteHelper
 from google.appengine.ext.webapp.template import render
 
 SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'src/content/')
-
+SERVED_FROM_AE = not os.environ['SERVER_SOFTWARE'].startswith('Dev')
 
 def parse(requestPath, fileLocation, content, lang='en'):
   context = {
     'lang': lang,
     'requestPath': requestPath.replace('/index', ''),
-    'bodyClass': 'devsite-doc-page'
+    'bodyClass': 'devsite-doc-page',
+    'servedFromAppEngine': SERVED_FROM_AE
   }
 
   ## Injects markdown includes into the markdown as appropriate
@@ -59,7 +60,9 @@ def parse(requestPath, fileLocation, content, lang='en'):
   content = md.convert(content)
 
   # Replaces <pre> tags with prettyprint enabled tags
-  content = re.sub(r'^<pre>(?m)', r'<pre class="prettyprint">', content)
+  content = re.sub(r'^<pre>(?m)', r'<pre class="prettyprint devsite-code-highlight">', content)
+  # Adds code highlighting support, which requires devsite-code-highlight
+  content = re.sub(r'^<pre class="prettyprint">(?m)', r'<pre class="prettyprint devsite-code-highlight">', content)
 
   # Save the content
   context['content'] = content

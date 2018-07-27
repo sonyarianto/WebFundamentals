@@ -3,12 +3,10 @@ book_path: /web/tools/workbox/_book.yaml
 description: A guide on how to generate a complete service worker with workbox-build.
 
 {# wf_blink_components: N/A #}
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-18 #}
 {# wf_published_on: 2017-11-15 #}
 
 # Generate a Service Worker with workbox-build {: .page-title }
-
-{% include "web/tools/workbox/_shared/beta.html" %}
 
 This page explains how to use the workbox-build Node module to generate a
 complete service worker with precaching and runtime caching.
@@ -32,7 +30,7 @@ const buildSW = () => {
   // This will return a Promise
   return workboxBuild.generateSW({
     globDirectory: 'build',
-    globPatthers: [
+    globPatterns: [
       '**\/*.{html,json,js,css}',
     ],
     swDest: 'build/sw.js',
@@ -44,7 +42,7 @@ This command will output a service worker to `build/sw.js` which
 will precache all the files in the `build/` directory that match
 any of the `globPatterns` defined.
 
-In your webpage, you can register this service worker by adding:
+In your web page, you can register this service worker by adding:
 
 {% include "web/tools/workbox/guides/_shared/register-sw.html" %}
 
@@ -72,28 +70,29 @@ const buildSW = () => {
   // This will return a Promise
   return workboxBuild.generateSW({
     globDirectory: 'build',
-    globPatthers: [
+    globPatterns: [
       '**\/*.{html,json,js,css}',
     ],
     swDest: 'build/sw.js',
 
     // Define runtime caching rules.
-    runtimeCaching: [
-      {
-        // Match any request ends with .png, .jpg, .jpeg or .svg.
-        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+    runtimeCaching: [{
+      // Match any request ends with .png, .jpg, .jpeg or .svg.
+      urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
 
-        // Apply a cache-first strategy.
-        handler: 'cacheFirst',
+      // Apply a cache-first strategy.
+      handler: 'cacheFirst',
 
-        options: {
-          // Only cache 10 images.
-          expiration: {
-            maxEntries: 10,
-          },
+      options: {
+        // Use a custom cache name.
+        cacheName: 'images',
+
+        // Only cache 10 images.
+        expiration: {
+          maxEntries: 10,
         },
       },
-    ],
+    }],
   });
 }
 
@@ -119,7 +118,7 @@ const workboxBuild = require('workbox-build');
 gulp.task('service-worker', () => {
   return workboxBuild.generateSW({
     globDirectory: 'build',
-    globPatthers: [
+    globPatterns: [
       '**\/*.{html,json,js,css}',
     ],
     swDest: 'build/sw.js',

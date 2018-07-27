@@ -3,16 +3,14 @@ book_path: /web/tools/workbox/_book.yaml
 description: The module guide for workbox-cli.
 
 {# wf_blink_components: N/A #}
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-09 #}
 {# wf_published_on: 2017-11-27 #}
 
 # Workbox CLI  {: .page-title }
 
-{% include "web/tools/workbox/_shared/beta.html" %}
-
 ## What's the Workbox CLI?
 
-The Workbox command line interface (contained in the the
+The Workbox command line interface (contained in the
 `workbox-cli` package) consists of a Node.js program called workbox that
 can be run from a Windows, macOS, of UNIX-compatible command line
 environment. Under the hood, workbox-cli wraps the  workbox-build module,
@@ -27,7 +25,7 @@ terminal.
 * {npm}
 
     <pre class="devsite-terminal">
-    npm install workbox-cli@beta --global
+    npm install workbox-cli --global
     </pre>
 
 * {Yarn}
@@ -173,6 +171,7 @@ automatically by `workbox wizard` or tweaked manually.
 
 Below is a list of options used by **just** the `generateSW` command.
 
+{% with anchor_prefix="generateSW-" %}
 <table class="responsive">
   <tbody>
     <tr>
@@ -181,11 +180,13 @@ Below is a list of options used by **just** the `generateSW` command.
 {% include "web/tools/workbox/_shared/config/groups/common-generate-schema.html" %}
   </tbody>
 </table>
+{% endwith %}
 
 ### Options used by `injectManifest`
 
 Below is a list of options used by **just** the `injectManifest` command.
 
+{% with anchor_prefix="injectManifest-" %}
 <table class="responsive">
   <tbody>
     <tr>
@@ -195,16 +196,20 @@ Below is a list of options used by **just** the `injectManifest` command.
 {% include "web/tools/workbox/_shared/config/groups/build-inject-schema.html" %}
   </tbody>
 </table>
+{% endwith %}
 
 ### Options used by both
 
 The remaining options are used by both commands.
 
+{% with anchor_prefix="common-" %}
 <table class="responsive">
   <tbody>
     <tr>
       <th colspan="2">Used by both `generateSW` and `injectManifest`.</th>
     </tr>
+{% include "web/tools/workbox/_shared/config/single/swDest.html" %}
 {% include "web/tools/workbox/_shared/config/groups/base-schema.html" %}
   </tbody>
 </table>
+{% endwith %}

@@ -1,14 +1,12 @@
 project_path: /web/tools/workbox/_project.yaml
 book_path: /web/tools/workbox/_book.yaml
-description: The module guide for workbox-core.
+description: The module guide for workbox-range-requests.
 
 {# wf_blink_components: N/A #}
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-12 #}
 {# wf_published_on: 2017-11-27 #}
 
 # Workbox Range Requests {: .page-title }
-
-{% include "web/tools/workbox/_shared/beta.html" %}
 
 ## What are Range Requests?
 
@@ -23,7 +21,7 @@ There may be scenarios where you want to serve a cached file
 but the browser has set a `range` header. Normally the header
 would be ignored.
 
-This module will read the cached response and return the 
+This module will read the cached response and return the
 specified range of data.
 
 ## Basic Usage
@@ -51,4 +49,4 @@ can use the `createPartialResponse()` function.
 workbox.rangeRequests.createPartialResponse(request, cachedResponse);
 ```
 
-For more info [see the reference docs](../reference-docs/prerelease/workbox.rangeRequests).
+For more info [see the reference docs](../reference-docs/latest/workbox.rangeRequests).

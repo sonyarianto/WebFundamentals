@@ -26,6 +26,8 @@ toc:
           path: /web/fundamentals/performance/get-started/wrapup-7
       - title: How to Think About Speed Tools
         path: /web/fundamentals/performance/speed-tools
+      - title: Assessing Loading Performance in Real Life with Navigation and Resource Timing
+        path: /web/fundamentals/performance/navigation-and-resource-timing/
       - title: User-centric Performance Metrics
         path: /web/fundamentals/performance/user-centric-performance-metrics
       - title: Understanding Low Bandwidth and High Latency
@@ -49,10 +51,13 @@ toc:
           path: /web/fundamentals/performance/optimizing-content-efficiency/image-optimization
           step_group: perf-oce
         - title: Automating Image Optimization
-          path: /web/fundamentals/performance/optimizing-content-efficiency/automating-image-optimization
+          path: /web/fundamentals/performance/optimizing-content-efficiency/automating-image-optimization/
+          step_group: perf-oce
+        - title: Replace Animated GIFs with Video
+          path: /web/fundamentals/performance/optimizing-content-efficiency/replace-animated-gifs-with-video/
           step_group: perf-oce
         - title: JavaScript Start-up Optimization
-          path: /web/fundamentals/performance/optimizing-content-efficiency/javascript-startup-optimization
+          path: /web/fundamentals/performance/optimizing-content-efficiency/javascript-startup-optimization/
           step_group: perf-oce
         - title: Loading Third-Party JavaScript
           path: /web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript/
@@ -63,6 +68,13 @@ toc:
         - title: HTTP Caching
           path: /web/fundamentals/performance/optimizing-content-efficiency/http-caching
           step_group: perf-oce
+        - title: Delivering Fast and Light Applications with Save-Data
+          path: /web/fundamentals/performance/optimizing-content-efficiency/save-data/
+          step_group: perf-oce
+      - title: Optimizing JavaScript
+        section:
+        - title: Reduce JavaScript Payloads with Tree Shaking
+          path: /web/fundamentals/performance/optimizing-javascript/tree-shaking/
       - title: Never Load the Same Resource Twice
         section:
         - title: Offline Cookbook
@@ -79,6 +91,10 @@ toc:
             path: /web/fundamentals/instant-and-offline/web-storage/indexeddb-best-practices
         - title: Offline UX Considerations
           path: /web/fundamentals/instant-and-offline/offline-ux
+      - title: Lazy Loading Resources
+        section:
+          - title: Images and Video
+            path: /web/fundamentals/performance/lazy-loading-guidance/images-and-video
       - title: Order Loading Thoughtfully
         section:
         - title: Critical Rendering Path

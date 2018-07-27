@@ -2,13 +2,11 @@ project_path: /web/tools/workbox/_project.yaml
 book_path: /web/tools/workbox/_book.yaml
 description: The module guide for workbox-build.
 
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-09 #}
 {# wf_published_on: 2018-01-31 #}
 {# wf_blink_components: Blink>ServiceWorker #}
 
 # Workbox Build {: .page-title }
-
-{% include "web/tools/workbox/_shared/beta.html" %}
 
 The `workbox-build` module integrates into a node-based build process and can generate an entire
 service worker, or just generate a list of assets to precache that could be used within an existing
@@ -54,12 +52,15 @@ configuration.
 
 ### Full generateSW Config
 
+{% with anchor_prefix="generateSW-" %}
 <table class="responsive">
   <tbody>
+{% include "web/tools/workbox/_shared/config/single/swDest.html" %}
 {% include "web/tools/workbox/_shared/config/groups/common-generate-schema.html" %}
 {% include "web/tools/workbox/_shared/config/groups/base-schema.html" %}
   </tbody>
 </table>
+{% endwith %}
 
 ## injectManifest Mode
 
@@ -71,7 +72,7 @@ const {injectManifest} = require('workbox-build');
 
 const swSrc = 'src/sw.js';
 const swDest = 'build/sw.js';
-generateSW({
+injectManifest({
   swSrc,
   swDest,
   // Other configuration options...
@@ -85,12 +86,15 @@ it into your existing service worker file.
 
 ### Full injectManifest Config
 
+{% with anchor_prefix="injectManifest-" %}
 <table class="responsive">
   <tbody>
+{% include "web/tools/workbox/_shared/config/single/swDest.html" %}
 {% include "web/tools/workbox/_shared/config/groups/common-inject-schema.html" %}
 {% include "web/tools/workbox/_shared/config/groups/base-schema.html" %}
   </tbody>
 </table>
+{% endwith %}
 
 ## Additional modes
 
@@ -117,6 +121,7 @@ generateSWString({
 
 The supported configuration options are:
 
+{% with anchor_prefix="generateSWString-" %}
 <table class="responsive">
   <tbody>
 {% include "web/tools/workbox/_shared/config/groups/generate-sw-string-schema.html" %}
@@ -124,6 +129,7 @@ The supported configuration options are:
 {% include "web/tools/workbox/_shared/config/groups/base-schema.html" %}
   </tbody>
 </table>
+{% endwith %}
 
 ### getManifest Mode
 
@@ -146,9 +152,11 @@ getManifest({
 
 The supported configuration options are:
 
+{% with anchor_prefix="getManifest-" %}
 <table class="responsive">
   <tbody>
 {% include "web/tools/workbox/_shared/config/groups/get-manifest-schema.html" %}
 {% include "web/tools/workbox/_shared/config/groups/base-schema.html" %}
   </tbody>
 </table>
+{% endwith %}

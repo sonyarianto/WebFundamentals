@@ -3,12 +3,10 @@ book_path: /web/tools/workbox/_book.yaml
 description: The module guide for workbox-core.
 
 {# wf_blink_components: N/A #}
-{# wf_updated_on: 2018-02-01 #}
+{# wf_updated_on: 2018-07-02 #}
 {# wf_published_on: 2017-11-27 #}
 
 # Workbox Precaching {: .page-title }
-
-{% include "web/tools/workbox/_shared/beta.html" %}
 
 ## What is Precaching?
 
@@ -27,11 +25,10 @@ the API and ensuring assets are downloaded efficiently.
 
 ## How workbox-precaching Works
 
-When a web app is loaded for the first time workbox-precaching will
-
-look at all the assets you want to download, remove any duplicates and hook
-up the relevant service worker events to download and store the assets,
-saving information about the revision of the asset in indexedDB.
+When a web app is loaded for the first time workbox-precaching will look at all 
+the assets you want to download, remove any duplicates and hook up the relevant 
+service worker events to download and store the assets, saving information about 
+the revision of the asset in indexedDB.
 
 ![Workbox precaching list to precached assets](../images/modules/workbox-precaching/precaching-step-1.png)
 
@@ -86,13 +83,11 @@ This allows workbox-precaching to know when the file has changed and update it.
 Workbox comes with tools to help with generating this list:
 
 - workbox-build
-  - This is an npm module that can be used in a gulp task or as an npm
-    run script.
+    - This is an npm module that can be used in a gulp task or as an npm run script.
 - workbox-webpack-plugin
-  - Webpack users can use the Workbox webpack plugin.
+    - Webpack users can use the Workbox webpack plugin.
 - workbox-cli
-  - Our CLI can also be used to generate the list of assets and add them
-    to your service worker.
+    - Our CLI can also be used to generate the list of assets and add them to your service worker.
 
 These tools make it easy to generate and use the list of assets for your site
 but you can generate the list yourself, just make sure you include unique
@@ -132,7 +127,7 @@ For example, a request for `/` can be responded to with the file at
 `/index.html`.
 
 Below is the list of manipulations that `workbox.precaching` does and how you
-can alter that behaviour.
+can alter that behavior.
 
 ### Ignore URL Parameters
 
@@ -153,7 +148,7 @@ workbox.precaching.precacheAndRoute(
     { url: '/index.html', revision: '383676' },
   ],
   {
-    ignoreUrlParametersMatching: /.*/
+    ignoreUrlParametersMatching: [/.*/]
   }
 );
 ```
@@ -214,7 +209,7 @@ workbox.precaching.precacheAndRoute(
     { url: '/index.html', revision: '383676' },
   ],
   {
-    urlManipulaion: ({url}) => {
+    urlManipulation: ({url}) => {
       ...
       return [alteredUrlOption1, alteredUrlOption2, ...];
     }

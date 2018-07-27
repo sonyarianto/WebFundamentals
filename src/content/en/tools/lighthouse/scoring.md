@@ -1,15 +1,20 @@
 project_path: /web/tools/_project.yaml
 book_path: /web/tools/_book.yaml
-description: A guide on how scoring works in Lighthouse.
+description: A guide on how scoring works in Lighthouse v2.
 
-{# wf_updated_on: 2018-01-03 #}
+{# wf_updated_on: 2018-05-08 #}
 {# wf_published_on: 2017-12-27 #}
 {# wf_blink_components: N/A #}
 
 [details]: https://docs.google.com/spreadsheets/d/1dXH-bXX3gxqqpD1f7rp6ImSOhobsT1gn_GQ2fGZp8UU/edit?ts=59fb61d2#gid=0
 [WikiHow]: https://www.wikihow.com/Calculate-Weighted-Average#Weighted_Averages_without_Percentages_sub
 
-# Lighthouse Scoring Guide {: .page-title }
+# Lighthouse v2 Scoring Guide {: .page-title }
+
+Note: This guide covers how scoring works in Lighthouse v2. See [Lighthouse v3 Scoring Guide][v3]
+if you're using v3.
+
+[v3]: /web/tools/lighthouse/v3/scoring
 
 The scores that you see at the top of your Lighthouse report represent the page's score for
 that particular category. This guide explains how Lighthouse calculates those scores.
