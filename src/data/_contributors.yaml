@@ -356,6 +356,23 @@ flaviocopes:
   description:
     en: Flavio is a Full Stack Developer
 
+victorcostan:
+  name:
+    given: Victor
+    family: Costan
+  google: "102128305988485092292"
+  twitter: pwnall
+  github: pwnall
+  role:
+    - author
+  description:
+    en: "Tech Lead, Chrome Storage"
+  org:
+    name: Google
+    unit: Chrome
+  country: US
+  email: costan@google.com
+
 dalecurtis:
   name:
     given: Dale
@@ -434,6 +451,21 @@ cwdoh:
   email: changwook.doh@gmail.com
   description:
     en: Chang is a mobile and HTML5 technologist
+
+tdresser:
+  name:
+    given: Tim
+    family: Dresser
+  org:
+    name: Google
+    unit: Software Engineer
+  country: CA
+  role:
+    - author
+  twitter: tdresser
+  email: tdresser@chromium.org
+  description:
+    en: Software Engineer working on performance metrics at Google
 
 samdutton:
   name:
@@ -916,6 +948,21 @@ zkoch:
   description:
     en: Google Chrome Product Manager
 
+kosamari:
+  name:
+    given: Mariko
+    family: Kosaka
+  org:
+    name: Google
+    unit: Developer Relations
+  country: US
+  role:
+    - author
+  twitter: kosamari
+  email: kosamari@google.com
+  description:
+    en: Mariko is a drawsplainer
+
 mustafa:
   name:
     given: Mustafa
@@ -1244,6 +1291,17 @@ chrispalmer:
   description:
     en: 'Chris is a security engineer on the Chrome Security Team, focusing on secure usability.'
 
+durgapandey:
+  name:
+    given: Durga
+    family: Pandey
+  country: US
+  role:
+    - author
+  twitter: _angleofrepose_
+  description:
+    en: 'Product Manager of Web Payments'
+
 jasonpark:
   name:
     given: Jason
@@ -1514,6 +1572,19 @@ borissmus:
   role:
     - author
   email: smus@google.com
+
+rsolomakhin:
+  name:
+    given: Rouslan
+    family: Solomakhin
+  org:
+    name: Google
+    unit: Chrome
+  country: USA
+  role:
+    - author
+  twitter: rsolomakhin
+  email: rouslan@google.com
 
 emilystark:
   name:
